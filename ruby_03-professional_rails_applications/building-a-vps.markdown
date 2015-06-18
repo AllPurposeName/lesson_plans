@@ -217,7 +217,7 @@ production:
   password: password1
 ```
 
-Also, don't forget to add `gem 'pg'` to your Gemfile.
+Also, don't forget to add `gem 'pg'` to your Gemfile and run `bundle`.
 
 You'll probably want to change `myapp` to the name of your application.
 
@@ -239,7 +239,7 @@ gem 'execjs'
 gem 'therubyracer'
 ```
 
-Fire up the Rails server and try loading `localhost:3000/articles` (from another ssh session).
+Bundle, fire up the Rails server, and try loading `localhost:3000/articles` (from another ssh session).
 
 Thanks to our trusty scaffold, you should see some boilerplate about
 "Listing Articles", indicating our app is now running and connected to
@@ -308,7 +308,15 @@ them which application process to use when serving requests.
 ### Configuring NGINX
 
 First, we're going to need to know where to tell Passenger to look for an installed version of Ruby.
-Fortunately passenger includes a script for finding this information, which we can use like so:
+Fortunately passenger includes a script for finding this information. Prior to setting that up we'll need to know where our installation of Ruby is hiding:
+
+```sh
+which ruby
+```
+
+You should get something like `/home/deploy/.rvm/rubies/ruby-2.2.1/bin/ruby`
+
+And then we can configure the passenger script like so:
 
 ```sh
 passenger-config --ruby-command
@@ -352,7 +360,7 @@ We're looking for the settings for Phusion Passenger. If you're using Vim, you c
 ##
 
 passenger_root /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
-passenger_ruby /home/deploy/.rvm/gems/ruby-2.2.1/wrappers/ruby;
+passenger_ruby /home/deploy/.rvm/wrappers/ruby-2.2.1/ruby;
 ```
 
 Let's restart our server.
@@ -451,6 +459,14 @@ Now let's make an empty node app with the express command:
 
 ```
 express hello-node
+```
+
+cd into the app, run the node equivalent of bundler, and then start
+the node server:
+
+```
+cd hello-node && npm install
+DEBUG=hello-node:* npm start
 ```
 
 This should give you a basic node app running on port 3000. Try curling
@@ -667,7 +683,7 @@ test:
 
 production:
   <<: *defaults
-  socket_url: "http://<YOUR_IP_HERE>:4200"
+  socket_url: "http://104.236.170.113:4200"
 ```
 
 __Step 4: Move Passenger Config to Your New App__
