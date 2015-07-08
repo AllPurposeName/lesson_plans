@@ -308,15 +308,7 @@ them which application process to use when serving requests.
 ### Configuring NGINX
 
 First, we're going to need to know where to tell Passenger to look for an installed version of Ruby.
-Fortunately passenger includes a script for finding this information. Prior to setting that up we'll need to know where our installation of Ruby is hiding:
-
-```sh
-which ruby
-```
-
-You should get something like `/home/deploy/.rvm/rubies/ruby-2.2.1/bin/ruby`
-
-And then we can configure the passenger script like so:
+Fortunately passenger includes a script for finding this information. 
 
 ```sh
 passenger-config --ruby-command
@@ -461,7 +453,7 @@ Now let's make an empty node app with the express command:
 express hello-node
 ```
 
-cd into the app, run the node equivalent of bundler, and then start
+cd into the app, run npm install, and then npm start
 the node server:
 
 ```
@@ -683,7 +675,7 @@ test:
 
 production:
   <<: *defaults
-  socket_url: "http://104.236.170.113:4200"
+  socket_url: "http://<YOUR_IP_HERE>:4200"
 ```
 
 __Step 4: Move Passenger Config to Your New App__
